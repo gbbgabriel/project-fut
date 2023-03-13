@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Adm {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Group {
+  id   String @id @default(uuid())
+  name String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Team      Team[]
+
+  @@map("group")
+}
+
+model Team {
+  id              String @id @default(uuid())
+  name            String @unique
+  matches         Int
+  wins            Int
+  losses          Int
+  goalsTotal      Int
+  goalsConceded   Int
+  goalsDifference Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  groupId String    @map("group_id")
+  group   Group     @relation(fields: [groupId], references: [id])
+  Players Players[]
+
+  @@map("team")
+}
+
+model Players {
+  id    String @id @default(uuid())
+  name  String @unique
+  goals Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  teamId String @map("team_id")
+  team   Team   @relation(fields: [teamId], references: [id])
+
+  @@map("players")
+}
