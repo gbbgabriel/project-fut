@@ -22,7 +22,9 @@ export class GroupsService {
   }
 
   async findOne(id: string) {
-    return this.database.group.findFirst({
+    await this.exists(id);
+
+    return this.database.group.findUnique({
       where: {
         id,
       },
@@ -31,6 +33,8 @@ export class GroupsService {
   }
 
   async update(id: string, updateGroupDto: UpdateGroupDto) {
+    await this.exists(id);
+
     return this.database.group.update({
       where: {
         id,
@@ -43,12 +47,20 @@ export class GroupsService {
   }
 
   async remove(id: string) {
+    await this.exists(id);
+
     return this.database.group.delete({ where: { id } });
     //return `This action removes a #${id} group`;
   }
 
   async exists(id: string) {
-    if (!(await this.findOne(id))) {
+    if (
+      !(await this.database.group.count({
+        where: {
+          id,
+        },
+      }))
+    ) {
       throw new NotFoundException(`O usuário ${id} não existe`);
     }
   }
