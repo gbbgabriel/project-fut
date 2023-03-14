@@ -1,17 +1,10 @@
-import { Transform } from 'class-transformer';
 import { IsEmail, IsString, IsStrongPassword } from 'class-validator';
-import { v4 as uuidv4 } from 'uuid';
 
-export class CreateAdmDto {
-  @Transform(() => uuidv4())
-  id: string;
-
-  @IsString()
-  name: string;
-
+export class AuthLoginDTO {
   @IsEmail()
   email: string;
 
+  @IsString()
   @IsStrongPassword({
     minLength: 6,
     minSymbols: 0,
