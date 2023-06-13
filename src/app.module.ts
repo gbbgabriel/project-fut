@@ -6,7 +6,7 @@ import { GroupsModule } from './groups/groups.module';
 import { TeamModule } from './team/team.module';
 import { PlayerModule } from './player/player.module';
 import { AuthModule } from './auth/auth.module';
-//teste
+
 @Module({
   imports: [AdmModule, GroupsModule, TeamModule, PlayerModule, AuthModule],
   controllers: [AppController],
